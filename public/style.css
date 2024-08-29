@@ -1,0 +1,75 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+div.corners {
+    border-radius: 25px;
+    border: 2px solid purple;
+    padding: 1vw;
+    width: 100% - 1vw;
+}
+
+img {
+    margin-right: 1vw;
+}
+
+h1, p, div, form {
+    margin: 1.5vh;
+}
+
+button, input[type=submit] {
+    display: inline-block;
+    padding: 4px 16px;
+    text-align: center;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    background-color: white;
+    border: 2px solid purple;
+}
+
+button:hover, input[type=submit]:hover {
+    background-color: purple;
+    color: white;
+}
+
+div.nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+div.nav > a  {
+    float: left;
+    border-right: 1px solid #bbb;
+}
+
+div.nav > a:last-child {
+    float: right;
+    border-right: none;
+}
+
+div.nav > a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+div.nav > a:hover:not(.active) {
+    background-color: #111;
+}
+
+.active {
+    background-color: purple;
+}
+
+.left, .right {
+    box-sizing: border-box;
+    width: 50%;
+    float: left;
+}
