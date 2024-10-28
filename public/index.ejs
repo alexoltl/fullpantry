@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Full Pantry - Home</title>
+</head>
+<body>
+    <div class="nav">
+        <a href="/" class="active"><i class="fa fa-home"></i> Home </a>
+        <a href="/search"><i class="fa fa-receipt"></i> Recipes </a>
+        <% if (!isLoggedIn) { %>
+            <a href="/login"><i class="fa fa-right-to-bracket"></i> Login </a>
+            <a href="/register"><i class="fa fa-user-plus"></i> Register </a>
+        <% } else { %>
+            <a href="/ingredients"><i class="fa fa-wheat-awn"></i> Ingredients</a>
+            <a href="/account"><i class="fa fa-user"></i> Account</a>
+            <a href="/logout"><i class="fa fa-right-from-bracket"></i> Logout </a>
+        <% } %>
+    </div>
+    <div class="main">
+        <% if (isLoggedIn) { %>
+            <h1>Welcome back, <%= username %>!</h1>
+            <p>Check out your recipe recommendations or view your pantry.</p>
+
+            <button><a href="/search">Search Recipes</a></button>
+            <button><a href="/collections">Your Collections</a></button>
+
+            <!-- Tabs for Meal Types -->
+            <div class="tabs">
+                <button onclick="showTab('dinner')" class="active">Dinner</button>
+                <button onclick="showTab('lunch')">Lunch</button>
+                <button onclick="showTab('breakfast')">Breakfast</button>
+            </div>
+
+            <!-- Recipes Container -->
+            <div id="dinner" class="tab-content">
+                <h2>Dinner Recipes</h2>
+                <div class="recipes">
+                    <% if (!dinnerRecipes || dinnerRecipes.length === 0) { %>
+                        <p>No dinner recipes found.</p>
+                    <% } else { %>
+                        <% dinnerRecipes.forEach(function(recipe) { %>
+                            <div class="recipe">
+                                <h3><%= recipe.recipe.label %> (<%= recipe.matchPercentage %>% match)</h3>
+                                <img src="<%= recipe.recipe.image %>" alt="<%= recipe.recipe.label %>">
+                                <p>Ingredients: <%= recipe.recipe.ingredientLines.join(', ') %></p>
+                                <p>Missing ingredients: <%= recipe.missingIngredients.join(', ') || 'None' %></p>
+                            </div>
+                        <% }); %>
+                    <% } %>
+                </div>
+            </div>
+            
+            <div id="lunch" class="tab-content" style="display: none;">
+                <h2>Lunch Recipes</h2>
+                <div class="recipes">
+                    <% if (!lunchRecipes || lunchRecipes.length === 0) { %>
+                        <p>No lunch recipes found.</p>
+                    <% } else { %>
+                        <% lunchRecipes.forEach(function(recipe) { %>
+                            <div class="recipe">
+                                <h3><%= recipe.recipe.label %> (<%= recipe.matchPercentage %>% match)</h3>
+                                <img src="<%= recipe.recipe.image %>" alt="<%= recipe.recipe.label %>">
+                                <p>Ingredients: <%= recipe.recipe.ingredientLines.join(', ') %></p>
+                                <p>Missing ingredients: <%= recipe.missingIngredients.join(', ') || 'None' %></p>
+                            </div>
+                        <% }); %>
+                    <% } %>
+                </div>
+            </div>
+            
+            <div id="breakfast" class="tab-content" style="display: none;">
+                <h2>Breakfast Recipes</h2>
+                <div class="recipes">
+                    <% if (!breakfastRecipes || breakfastRecipes.length === 0) { %>
+                        <p>No breakfast recipes found.</p>
+                    <% } else { %>
+                        <% breakfastRecipes.forEach(function(recipe) { %>
+                            <div class="recipe">
+                                <h3><%= recipe.recipe.label %> (<%= recipe.matchPercentage %>% match)</h3>
+                                <img src="<%= recipe.recipe.image %>" alt="<%= recipe.recipe.label %>">
+                                <p>Ingredients: <%= recipe.recipe.ingredientLines.join(', ') %></p>
+                                <p>Missing ingredients: <%= recipe.missingIngredients.join(', ') || 'None' %></p>
+                            </div>
+                        <% }); %>
+                    <% } %>
+                </div>
+            </div>
+            
+            
+        <% } else { %>
+            <h1>Welcome to Full Pantry</h1>
+            <p>Log in or sign up to start getting recipe recommendations based on what's in your pantry.</p>
+            <button><a href="/login">Login</a></button>
+            <button><a href="/register">Register</a></button>
+        <% } %>
+        
+        <% if (error) { %>
+            <div class="error">
+                <p><%= error %></p>
+            </div>
+        <% } %>
+        <% if (message) { %>
+            <div class="message">
+                <p><%= message %></p>
+            </div>
+        <% } %>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            var tabs = document.getElementsByClassName('tab-content');
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].style.display = 'none';
+            }
+
+            // Remove active class from all buttons
+            var buttons = document.getElementsByClassName('tabs')[0].getElementsByTagName('button');
+            for (var j = 0; j < buttons.length; j++) {
+                buttons[j].classList.remove('active');
+            }
+
+            // Show the selected tab and make the button active
+            document.getElementById(tabName).style.display = 'block';
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

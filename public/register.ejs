@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Full Pantry - Register</title>
+</head>
+<body>
+    <div class="nav">
+        <a href="/">Home</a>
+        <a href="/search">Recipes</a>
+        <% if (!isLoggedIn) { %>
+            <a href="/login">Login</a>
+            <a href="/register" class="active">Register</a>
+        <% } else { %>
+            <a href="/ingredients">Ingredients</a>
+            <a href="/account">Account</a>
+            <a href="/logout">Logout</a>
+        <% } %>
+    </div>
+    <div class="main">
+        <h1>Register</h1>
+        <form action="/register" method="post">
+            <label for="username">Username: </label><input type="text" name="username"><br/>
+            <label for="password">Password: </label><input type="password" name="password"><br/>
+            <label for="password">Confirm password: </label><input type="password" name="confirm"><br/>
+            <br/><input type="submit" value="Submit">
+        </form>
+        
+        <% if (error) { %>
+            <div class="error">
+                <p><%= error %></p>
+            </div>
+        <% } %>
+        <% if (message) { %>
+            <div class="message">
+                <p><%= message %></p>
+            </div>
+        <% } %>
+        <p>Have an account? Login <a href="register.html">here</a></p>
+    </div>
+</body>
+</html>

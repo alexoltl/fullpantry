@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Full Pantry - Search</title>
+</head>
+<body>
+    <div class="nav">
+        <a href="/">Home</a>
+        <a href="/search" class="active">Recipes</a>
+        <% if (!isLoggedIn) { %>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        <% } else { %>
+            <a href="/ingredients">Ingredients</a>
+            <a href="/account">Account</a>
+            <a href="/logout">Logout</a>
+        <% } %>
+    </div>
+
+    <div class="main">
+        <div class="left">
+            <h1>Recipe Searcher</h1>
+            <form action="/search" method="post">
+                <label for="query">Search from millions of recipes: </label>
+                <input type="text" id="query" name="query" placeholder="Enter a dish or ingredient">
+                <br/><br/>
+                <input type="submit" value="Search">
+            </form>
+            <% if (error) { %>
+                <div class="error">
+                    <p><%= error %></p>
+                </div>
+            <% } %>
+            <% if (message) { %>
+                <div class="message">
+                    <p><%= message %></p>
+                </div>
+            <% } %>
+        </div>
+        <!-- <div class="right">
+            <% if (recipes && recipes.length > 0) { %>
+                <h2>Search Results:</h2>
+                <% recipes.forEach(function(hit) { %>
+                    <div class="recipe">
+                        <h3><%= hit.recipe.label %></h3>
+                        <img src="<%= hit.recipe.image %>" alt="<%= hit.recipe.label %>">
+                        <p>Ingredients: <%= hit.recipe.ingredientLines.join(', ') %></p>
+                        <p><a href="<%= hit.recipe.url %>" target="_blank">View Full Recipe</a></p>
+                    </div>
+                <% }); %>
+            <% } %>
+        </div> -->
+        <div class="right">
+            <% if (recipes && recipes.length > 0) { %>
+                <h2>Search Results: <%= recipes.length %> found</h2>
+                <% recipes.forEach(function(hit) { %>
+                    <div class="recipe">
+                        <img src="<%= hit.recipe.image %>" style="float: left;" alt="Recipe Image"/>
+                        <h1><%= hit.recipe.label %></h1>
+                        <p><strong>Source:</strong> <a href="<%= hit.recipe.url %>" target="_blank"><%= hit.recipe.source %></a></p>
+                        <p><strong>Cuisine Type:</strong> <%= hit.recipe.cuisineType.join(', ') %></p>
+                        <p><strong>Meal Type:</strong> <%= hit.recipe.mealType.join(', ') %></p>
+                        <p><strong>Dish Type:</strong> <%= hit.recipe.dishType.join(', ') %></p>
+                        <p><strong>Yield:</strong> Serves <%= hit.recipe.yield %></p>
+                        <p><strong>Total Time:</strong> <%= hit.recipe.totalTime %> minutes</p>
+                        <p><strong>Calories:</strong> <%= Math.round(hit.recipe.calories) %> kcal</p>
+
+                        <h2>Ingredients</h2>
+                        <ul>
+                            <% hit.recipe.ingredientLines.forEach(function(ingredient) { %>
+                                <li><%= ingredient %></li>
+                            <% }); %>
+                        </ul>
+
+                        <h2>Health Labels</h2>
+                        <p><%= hit.recipe.healthLabels.join(', ') %></p>
+
+                        <% if (hit.recipe.cautions.length > 0) { %>
+                        <h2>Cautions</h2>
+                        <p><%= hit.recipe.cautions.join(', ') %></p>
+                        <% } %>
+
+                        <a href="<%= hit.recipe.url %>" target="_blank"><button>View Full Recipe</button></a>
+                        <button>Add to collection</button>
+                        <button onclick="copyLink('<%= hit.recipe.url %>')">Copy link</button>
+                    </div>
+                <% }); %>
+            <% } %>
+        </div>
+        
+        <script>
+            function copyLink(link) {
+                navigator.clipboard.writeText(link).then(() => {
+                    alert("Link copied to clipboard!");
+                }).catch(err => {
+                    console.error("Failed to copy link: ", err);
+                });
+            }
+        </script>
+    </div>
+</body>
+</html>
